@@ -6,7 +6,7 @@ import {
   GridWrapper,
   HeaderWrapper,
   Input,
-  MovieWrapper,
+  MovieWrapper
 } from './App.styles';
 
 interface Movie {
@@ -70,7 +70,7 @@ const App: React.FC = () => {
         <GridWrapper>
           {movies !== undefined &&
             movies.map((movie) => (
-              <MovieWrapper key={movie.Title + movie.Year}>
+              <MovieWrapper key={movie.imdbID}>
                 <a
                   href={`https://www.imdb.com/title/${movie.imdbID}`}
                   title="See details - go to IMDB"
