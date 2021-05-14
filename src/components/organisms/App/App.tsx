@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { GlobalStyle } from '../../../GlobalStyle/GlobalStyle.styles';
 import Input from '../../atoms/Input/Input';
 import Message, { Msg } from '../../atoms/Message/Message';
@@ -23,10 +23,11 @@ const App: React.FC = () => {
     content: null,
   });
   const [movies, setMovies] = useState<Movie[]>([]);
+  const isMounted = useRef(true);
 
   useEffect(() => {
-    let mounted = true;
     if (filterValue !== '') {
+      isMounted.current = true;
       const delaySearchFn = setTimeout(() => {
         setStatus((prevState) => ({
           ...prevState,
@@ -37,8 +38,8 @@ const App: React.FC = () => {
             `https://www.omdbapi.com/?s=${filterValue}&apikey=${process.env.REACT_APP_API_KEY}`
           )
           .then((res) => {
-            if (mounted) {
-              console.log(res);
+            console.log(isMounted.current);
+            if (isMounted.current) {
               setStatus((prevState) => ({
                 ...prevState,
                 loading: false,
@@ -61,7 +62,7 @@ const App: React.FC = () => {
 
       return () => {
         clearTimeout(delaySearchFn);
-        mounted = false;
+        isMounted.current = false;
       };
     }
   }, [filterValue]);
